@@ -6,18 +6,16 @@ using System;
 
 public class UpdateSliders : MonoBehaviour
 {
-    public SettingsData settings;
     public SliderData[] sliders;
 
     void Start()
     {
          for (int i=0;i<sliders.Length;i++)
-         {
             sliders[i].slider.value = PlayerPrefs.GetFloat(sliders[i].label);
-         }  
     }
 
-    public void SliderChanged(string name) {
+    public void SliderChanged(string name)
+    {
         PlayerPrefs.SetFloat(name, 1);
     }
 }

@@ -5,7 +5,5 @@ using UnityEngine.UI;
 public class PathAgent : MonoBehaviour
 {
     public Path path;
-
-    [Range(0, 100f)]
-    public float distance;
+    [Range(0f, 1f)] public float proportion;
 }

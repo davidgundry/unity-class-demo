@@ -1,79 +1,49 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Launcher : MonoBehaviour
 {
-    public Projectile projectile;
-
-    public Vector3 offset;
-
-    public Quaternion angle { get; private set;}
-
-    [Range(1f, 89f)]public float pitch;
-
-    public float anglePitch {get; private set;}
-
-    //public float theta;
+    [field: SerializeField] public Projectile Projectile { get; private set;}
+    [field: SerializeField] public Vector3 Offset { get; set;}
+    [field: SerializeField] public Quaternion Angle { get; private set;} = Quaternion.identity;
+    [field: SerializeField] public float Velocity { get; private set; }
+    [Min(1f), Range(1f, 89f)] public float pitch = 30f;
 
     private Vector3 _target;
-    public Vector3 target {get {
-        return _target;
-    } set {
+    public Vector3 Target {get { return _target; } set {
         _target = value;
+        UpdateValuesForTarget();
+    }}
 
-        Vector3 dir = target - offset;
-        Vector3 dirFlat = new Vector3(dir.x, 0, dir.z);
+    private float _aggroRadius = 10;
+    public float AggroRadius {get { return _aggroRadius; } set {
+        _aggroRadius = value;
+        LimitTargetToAggroRadius();
+    }}
+
+    private void LimitTargetToAggroRadius()
+    {
+        if ((Target - transform.position).magnitude > _aggroRadius)
+            Target *= _aggroRadius/(Target - transform.position).magnitude;
+    }
+
+    private void UpdateValuesForTarget()
+    {
+        Vector3 dir = Target - Offset;
+        Vector3 dirFlat = new(dir.x, 0, dir.z);
         
-        angle = Quaternion.LookRotation(dirFlat, Vector3.up);
+        Angle = Quaternion.LookRotation(dirFlat, Vector3.up);
         float distance = dir.magnitude;
-        float groundDistance = dirFlat.magnitude;
-
-
-        // velocity = 50;
-        // float v = velocity;
-        // float sqrt = Mathf.Sqrt(v*v*v*v - Physics.gravity.y * (Physics.gravity.y * groundDistance*groundDistance + 2*dir.y*v*v));
-        // float theta2 =  Mathf.Atan((v*v + sqrt)/(Physics.gravity.y * groundDistance)) * Mathf.Rad2Deg;
-        // float theta = Mathf.Atan((v*v - sqrt)/(Physics.gravity.y * groundDistance)) * Mathf.Rad2Deg;
-        // angle *= Quaternion.AngleAxis(-theta, Vector3.right);
-
-        // theta = Mathf.Atan((dir.y/groundDistance) + Mathf.Sqrt(((dir.y*dir.y)/(groundDistance*groundDistance)) + 1));
-        
-
 
         float height = Mathf.Tan(pitch * Mathf.Deg2Rad) * distance;
         double startVelocityY = Math.Sqrt(-Physics.gravity.y*height);
         double startVelocityX = (distance*startVelocityY)/(2*height);
-        velocity = (float) Math.Sqrt(startVelocityX*startVelocityX + startVelocityY*startVelocityY);
-        anglePitch = Mathf.Atan((float) startVelocityY/ (float) startVelocityX) * Mathf.Rad2Deg;
-        angle *= Quaternion.AngleAxis(-anglePitch, Vector3.right);
+        Velocity = (float) Math.Sqrt(startVelocityX*startVelocityX + startVelocityY*startVelocityY);
+        float anglePitch = Mathf.Atan((float) startVelocityY/ (float) startVelocityX) * Mathf.Rad2Deg;
+        Angle *= Quaternion.AngleAxis(-anglePitch, Vector3.right);
     
-        float d = (value - transform.position).magnitude;
-        if ( d> aggroRadius )
-            aggroRadius = d;
-    }}
-
-    public float velocity { get; private set; }
-
-    private float _aggroRadius = 10;
-    public float aggroRadius {get {
-        return _aggroRadius;
-    } set {
-        _aggroRadius = value;
-        if ((target - transform.position).magnitude > value )
-        {
-            target *= value/(target - transform.position).magnitude;
-        }
-    }}
-
-    [ContextMenu("Fire")]
-    public void Fire()
-    {
-        // var body = Instantiate(
-        //     projectile, 
-        //     transform.TransformPoint(offset), 
-        //     transform.rotation);
-        // body.velocity = Vector3.forward * velocity;
+        float d = (Target - transform.position).magnitude;
+        if ( d> AggroRadius )
+            AggroRadius = d;
     }
 }

@@ -51,5 +51,8 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Class demo.sln"
+    "dotnet.defaultSolution": "unity-class-demo.sln",
+    "cSpell.words": [
+        "Mathf"
+    ]
 }

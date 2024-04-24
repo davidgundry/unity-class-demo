@@ -7,7 +7,7 @@ public class Path : MonoBehaviour
     public Vector3[] nodes;
     public bool isLoop;
 
-    public Vector3 distanceToPosition(float distance)
+    public Vector3 ProportionToPosition(float proportion)
     {
         // TODO: does not work for loops
         float[] lengths = new float[nodes.Length-1];
@@ -17,12 +17,9 @@ public class Path : MonoBehaviour
             lengths[i] = (nodes[i+1] - nodes[i]).magnitude;
             sum += lengths[i];
         }
-        if (distance > sum)
-            distance = sum;
-        if (distance < 0)
-            distance = 0;
         float sumSoFar = 0;
-        //float distance = proportion * sum;
+        float distance = proportion * sum;
+        distance = Mathf.Clamp(distance, 0, sum);
         for (int i=0;i<lengths.Length;i++)
         {
             sumSoFar += lengths[i];
@@ -32,7 +29,6 @@ public class Path : MonoBehaviour
                 return Vector3.Lerp(nodes[i], nodes[i+1], sectionProportion);
             }
         }
-        
         return new Vector3();
     }
 }

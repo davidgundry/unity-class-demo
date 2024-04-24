@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TrackSliderValue : MonoBehaviour
 {
     public Slider slider;
-    private TMPro.TextMeshProUGUI   text;
+    private TMPro.TextMeshProUGUI text;
 
     void Start()
     {

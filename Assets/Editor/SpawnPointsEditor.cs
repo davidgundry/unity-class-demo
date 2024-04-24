@@ -9,15 +9,8 @@ public class SpawnPointsEditor : Editor
     {
         SpawnPoints spawnPoints = (SpawnPoints) target;
         DrawDefaultInspector();
-        EditorGUILayout.HelpBox("This is a help box", MessageType.Info);
         if(GUILayout.Button("Add"))
-        {
            spawnPoints.Add();
-        }
-        if(GUILayout.Button("Spawn"))
-        {
-           spawnPoints.Spawn();
-        }
     }
 }
 
@@ -28,11 +21,11 @@ public class SpawnerEditor : Editor
     {
         Spawner spawner = (Spawner) target;
         DrawDefaultInspector();
-        EditorGUILayout.HelpBox("When 'Spawn' is clicked, the objects are instantiated", MessageType.Info);
+        EditorGUILayout.HelpBox("When 'Spawn' is clicked, the objects will be instantiated", MessageType.Info);
         if(GUILayout.Button("Spawn"))
-        {
            spawner.Spawn();
-        }
+        if(GUILayout.Button("Reset"))
+           spawner.Reset();
     }
 }
 

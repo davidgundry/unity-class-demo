@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditor;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/SpawnPoints"), ExecuteInEditMode]
 public class SpawnPoints : ScriptableObject
@@ -13,18 +11,11 @@ public class SpawnPoints : ScriptableObject
         points.Add(new SpawnPoint());
     }
 
-    [MenuItem("Tools/Spawn Points")]
-    private static void NewMenuOption()
-    {
-        Debug.Log("Run");
-    }
-
     public void Spawn() {
-       for (int i=0;i<points.Count; i++)
+        for (int i=0;i<points.Count; i++)
         {
             GameObject go = Instantiate(points[i].prefab, points[i].position, Quaternion.identity);
             go.GetComponent<Rigidbody>().velocity = points[i].velocity;
-            go.GetComponent<Rigidbody>().mass = 1000;
         }
     }
 }

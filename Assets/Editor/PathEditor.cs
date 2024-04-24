@@ -38,4 +38,11 @@ public class PathEditor : Editor {
         if (path.isLoop)
             Handles.DrawDottedLine(path.nodes[path.nodes.Length-1], path.nodes[0], 3);
     }
+
+    [DrawGizmo(GizmoType.Pickable | GizmoType.NonSelected)]
+    static void DrawIcon(Path path, GizmoType gizmoType)
+    {
+        for (int i=0;i<path.nodes.Length;i++)
+            Gizmos.DrawIcon(path.nodes[i], "signpost.png", true);
+    }
 }
