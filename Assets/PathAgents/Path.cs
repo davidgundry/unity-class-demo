@@ -31,4 +31,9 @@ public class Path : MonoBehaviour
         }
         return new Vector3();
     }
+
+    [ContextMenu("Smooth Path")]
+    private void SmoothPath() {
+    
+    }
 }
